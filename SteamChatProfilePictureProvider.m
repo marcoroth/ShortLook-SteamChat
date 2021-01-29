@@ -13,13 +13,13 @@
     if (!data) return nil;
 
     NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    if (!dataStr || ![dataStr containsString:@"avatar"]) return nil;
     NSString *imageURLStr = [[[[dataStr componentsSeparatedByString:@"<avatarFull><![CDATA["] objectAtIndex:1] componentsSeparatedByString:@"]]></avatarFull>"] objectAtIndex:0];
 
     if (imageURLStr) {
       NSURL *imageURL = [NSURL URLWithString:imageURLStr];
       return [NSClassFromString(@"DDNotificationContactPhotoPromiseOffer") offerDownloadingPromiseWithPhotoIdentifier:imageURLStr fromURL:imageURL];
-    } else {
-      return nil;
     }
+    return nil;
   }
 @end
